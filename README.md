@@ -1,7 +1,7 @@
 # A basic devcontainer for the Solidity development course
 
 ## How to use this to create a new project
-1. Pull repo down.
+1. (Fork this repo) Clone to local machine.
 2. Change folder name as needed.
 3. Open in VS Code, click "Reopen in Container" when asked.
 4. In Terminal, run `npx hardhat init` to create a TypeScript project (with Viem)
