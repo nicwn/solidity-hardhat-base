@@ -1,0 +1,21 @@
+{
+  "name": "solidity-hardhat-dev",
+  "version": "1.0.0",
+  "description": "description",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solidity",
+    "hardhat",
+    "viem",
+    "encodecamp"
+  ],
+  "author": "nicwn",
+  "license": "ISC",
+  "devDependencies": {
+    "hardhat": "^2.22.2",
+    "mocha": "^10.4.0"
+  }
+}
