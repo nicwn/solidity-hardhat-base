@@ -1,34 +1,44 @@
 import { viem } from "hardhat";
 import { toHex, hexToString, formatEther } from "viem";
 
-const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
+const PROPOSALS = ["Proposal 1", "Proposal 2", "Strawberry", "Chocolate", "Coffee"];
 
 async function main() {
+  const publicClient = await viem.getPublicClient();
+  const blockNumber = await publicClient.getBlockNumber();
+  console.log("Last block number:", blockNumber);
+
+  const [deployer] = await viem.getWalletClients();
+  console.log("Deployer address:", deployer.account.address);
+
+  const balance = await publicClient.getBalance({
+    address: deployer.account.address,
+  });
+  console.log(
+    "Deployer balance:",
+    formatEther(balance),
+    deployer.chain.nativeCurrency.symbol
+  );
+
+  // Print out the proposals
   console.log("Proposals: ");
   PROPOSALS.forEach((element, index) => {
     console.log(`Proposal N. ${index + 1}: ${element}`);
   });
-  const publicClient = await viem.getPublicClient();
-  const [deployer, otherAccount] = await viem.getWalletClients();
-  
-  console.log("\nDeploying Ballot contract");
 
+  // Deploy the Ballot contract
+  console.log("\nDeploying Ballot contract");
   const ballotContract = await viem.deployContract("Ballot", [
     PROPOSALS.map((prop) => toHex(prop, { size: 32 })),
   ]);
-
   console.log("Ballot contract deployed to:", ballotContract.address);
-
-  console.log("publicClient: ", publicClient);
-  console.log("deployer: ", deployer);
-  console.log("otherAccount: ", otherAccount); 
 
   console.log("Proposals: ");
   for (let index = 0; index < PROPOSALS.length; index++) {
     const proposal = await ballotContract.read.proposals([BigInt(index)]);
     const name = hexToString(proposal[0], { size: 32 });
     console.log({ index, name, proposal });
-  } 
+  }
 }
 
 main().catch((error) => {
